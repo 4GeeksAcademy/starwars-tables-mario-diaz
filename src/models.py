@@ -36,6 +36,42 @@ class FavoriteCharacter(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
 
 
+class Planets(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    climate: Mapped[str] = mapped_column(nullable=False)
+    terrain: Mapped[str] = mapped_column(nullable=False)
+
+    favorite_planets: Mapped[List["FavoritePlanet"]] = relationship(back_populates="planets")
+
+class FavoritePlanet(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    planets: Mapped["Planets"] = relationship(back_populates="favorite_planets")
+    planet_id: Mapped[int] = mapped_column(ForeignKey("planets.id"), nullable=False)
+
+    user: Mapped["User"] = relationship(back_populates="favorite_planets")
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+
+
+class Vehicles(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    model: Mapped[str] = mapped_column(nullable=False)   
+    vehicle_class: Mapped[str] = mapped_column(nullable=False)
+
+    favorite_planets: Mapped[List["FavoriteVehicle"]] = relationship(back_populates="Vehicles")
+
+class FavoriteVehicle(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    planets: Mapped["Planets"] = relationship(back_populates="favorite_vehicles")
+    planet_id: Mapped[int] = mapped_column(ForeignKey("vehicles.id"), nullable=False)
+
+    user: Mapped["User"] = relationship(back_populates="favorite_vehicles")
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+
+
     def serialize(self):
         return {
             "id": self.id,
