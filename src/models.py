@@ -104,7 +104,7 @@ class Vehicles(db.Model):
     model: Mapped[str] = mapped_column(nullable=False)   
     vehicle_class: Mapped[str] = mapped_column(nullable=False)
 
-    favorite_vehicles: Mapped[List["FavoriteVehicle"]] = relationship(back_populates="Vehicles")
+    favorite_vehicles: Mapped[List["FavoriteVehicle"]] = relationship(back_populates="vehicles")
 
     def serialize(self):
         return {
